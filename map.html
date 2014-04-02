@@ -45,10 +45,10 @@
       map.addLayer(layerMarkers);
  
       // Add the Layer with the GPX Track
-      var lgpx = new OpenLayers.Layer.Vector("Lakeside cycle ride", {
+      var lgpx = new OpenLayers.Layer.Vector("Weisshorn Hike", {
         strategies: [new OpenLayers.Strategy.Fixed()],
         protocol: new OpenLayers.Protocol.HTTP({
-          url: "",
+          url: "weisshorn-2014.gpx",
           format: new OpenLayers.Format.GPX()
         }),
         style: {strokeColor: "red", strokeWidth: 5, strokeOpacity: 0.5},
