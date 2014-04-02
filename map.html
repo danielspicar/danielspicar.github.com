@@ -25,7 +25,8 @@
       });*/
 
       // Create a GeoAdmin Map
-var map = new ga.Map({
+
+/*var map = new ga.Map({
   
   // Define the div where the map is placed
   target: 'map',
@@ -97,6 +98,29 @@ map.on('singleclick', function(evt) {
   var pixel = evt.pixel;
   var coordinate = evt.coordinate;
   displayFeatureInfo(pixel, coordinate);
+});*/
+
+var map = new OpenLayers.Map({
+    div: "map",
+    layers: [
+        new OpenLayers.Layer.WMS(
+            "WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0",
+            {layers: "basic"}
+        ),
+        new OpenLayers.Layer.Vector("KML", {
+            strategies: [new OpenLayers.Strategy.Fixed()],
+            protocol: new OpenLayers.Protocol.HTTP({
+                url: "weisshorn-2014.kml",
+                format: new OpenLayers.Format.KML({
+                    extractStyles: true, 
+                    extractAttributes: true,
+                    maxDepth: 2
+                })
+            })
+        })
+    ],
+    center: new OpenLayers.LonLat(-112.169, 36.099),
+    zoom: 11
 });
     </script>
   </body>
