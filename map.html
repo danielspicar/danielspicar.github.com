@@ -1,128 +1,75 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <style>
-      .map {
-        height: 400px;
-        width: 100%;
-      }
-    </style>
-    <title>GeoAdmin API example</title>
-  </head>
-  <body>
-    <h2>My first GeoAdmin map</h2>
-    <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-    <!--<script src="http://api3.geo.admin.ch/loader.js?lang=en" type="text/javascript"></script>-->
-    <div id="map" class="map"></div>
-    <script type="text/javascript">
-      /*var layer = ga.layer.create('ch.swisstopo.pixelkarte-farbe');
-      var map = new ga.Map({
-        target: 'map',
-        layers: [layer],
-        view: new ol.View2D({
-          resolution: 500,
-          center: [670000, 160000]
-        })
-      });*/
-
-      // Create a GeoAdmin Map
-
-/*var map = new ga.Map({
-  
-  // Define the div where the map is placed
-  target: 'map',
-  
-  // Create a 2D view
-  view: new ol.View2D({
-    
-    // Define the default resolution
-    // 10 means that one pixel is 10m width and height
-    // List of resolution of the WMTS layers:
-    // 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1, 0.5, 0.25, 0.1
-    resolution: 10,
-    
-    // Define a coordinate CH1903 (EPSG:21781) for the center of the view
-    center: [670000, 160000]
-  })
-});
-
-// Create a background layer
-var lyr1 = ga.layer.create('ch.swisstopo.pixelkarte-farbe');
-
-map.addLayer(lyr1);
-
-// Create the KML Layer
-var vector = new ol.layer.Vector({
-  source: new ol.source.KML({
-    projection: 'EPSG:21781',
-    url: 'weisshorn-2014.kml'
-  })
-});
-
-map.addLayer(vector);
-
-// Popup showing the position the user clicked
-var popup = new ol.Overlay({
-  element: document.getElementById('popup')
-});
-
-map.addOverlay(popup);
-
-var findFeatures = function(pixel) {
-  var features = [];
-  map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-    features.push(feature);
-  });
-  return features;
-};
-
-var displayFeatureInfo = function(pixel, coordinate) {
-  var features = findFeatures(pixel);
-  var element = popup.getElement();
-  var feature = features[0];
-  if (feature) {
-     $(element).popover('destroy');
-     popup.setPosition(coordinate);
-     $(element).popover({
-      'placement': 'top',
-      'animation': false,
-      'html': true,
-      'content': feature.get('description')
-     });
-     $(element).popover('show');
-  } else {
-     $(element).popover('destroy');
-  }
-};
-
-map.on('singleclick', function(evt) {
-  var pixel = evt.pixel;
-  var coordinate = evt.coordinate;
-  displayFeatureInfo(pixel, coordinate);
-});*/
-
-var map = new OpenLayers.Map({
-    div: "map",
-    layers: [
-        new OpenLayers.Layer.WMS(
-            "WMS", "http://vmap0.tiles.osgeo.org/wms/vmap0",
-            {layers: "basic"}
-        ),
-        new OpenLayers.Layer.Vector("KML", {
-            strategies: [new OpenLayers.Strategy.Fixed()],
-            protocol: new OpenLayers.Protocol.HTTP({
-                url: "weisshorn-2014.kml",
-                format: new OpenLayers.Format.KML({
-                    extractStyles: true, 
-                    extractAttributes: true,
-                    maxDepth: 2
-                })
-            })
-        })
-    ],
-    center: new OpenLayers.LonLat(-112.169, 36.099),
-    zoom: 11
-});
-    </script>
-  </body>
+<html>
+<head>
+  <!-- Source: http://wiki.openstreetmap.org/wiki/Openlayers_Track_example -->
+  <title>Simple OSM GPX Track</title>
+  <!-- bring in the OpenLayers javascript library
+     (here we bring it from the remote site, but you could
+     easily serve up this javascript yourself) -->
+  <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+  <!-- bring in the OpenStreetMap OpenLayers layers.
+     Using this hosted file will make sure we are kept up
+     to date with any necessary changes -->
+  <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
+ 
+  <script type="text/javascript">
+    // Start position for the map (hardcoded here for simplicity,
+    // but maybe you want to get this from the URL params)
+    var lat=47.496792
+    var lon=7.571726
+    var zoom=13
+ 
+    var map; //complex object of type OpenLayers.Map
+ 
+    function init() {
+      map = new OpenLayers.Map ("map", {
+        controls:[
+          new OpenLayers.Control.Navigation(),
+          new OpenLayers.Control.PanZoomBar(),
+          new OpenLayers.Control.LayerSwitcher(),
+          new OpenLayers.Control.Attribution()],
+        maxExtent: new OpenLayers.Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
+        maxResolution: 156543.0399,
+        numZoomLevels: 19,
+        units: 'm',
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        displayProjection: new OpenLayers.Projection("EPSG:4326")
+      } );
+ 
+      // Define the map layer
+      // Here we use a predefined layer that will be kept up to date with URL changes
+      layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+      map.addLayer(layerMapnik);
+      layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+      map.addLayer(layerCycleMap);
+      layerMarkers = new OpenLayers.Layer.Markers("Markers");
+      map.addLayer(layerMarkers);
+ 
+      // Add the Layer with the GPX Track
+      var lgpx = new OpenLayers.Layer.Vector("Lakeside cycle ride", {
+        strategies: [new OpenLayers.Strategy.Fixed()],
+        protocol: new OpenLayers.Protocol.HTTP({
+          url: "weisshorn-2014.gpx",
+          format: new OpenLayers.Format.GPX()
+        }),
+        style: {strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
+        projection: new OpenLayers.Projection("EPSG:4326")
+      });
+      map.addLayer(lgpx);
+ 
+      var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+      map.setCenter(lonLat, zoom);
+ 
+      var size = new OpenLayers.Size(21, 25);
+      var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+      var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
+      layerMarkers.addMarker(new OpenLayers.Marker(lonLat,icon));
+    }
+  </script>
+ 
+</head>
+<!-- body.onload is called once the page is loaded (call the 'init' function) -->
+<body onload="init();">
+  <!-- define a DIV into which the map will appear. Make it take up the whole window -->
+  <div style="width:90%; height:90%" id="map"></div>
+</body>
 </html>
