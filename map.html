@@ -43,8 +43,6 @@
       map.addLayer(gphy);
       //layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
       //map.addLayer(layerCycleMap);
-      layerMarkers = new OpenLayers.Layer.Markers("Markers");
-      map.addLayer(layerMarkers);
  
       // Add the Layer with the GPX Track
       var lgpx = new OpenLayers.Layer.Vector("Weisshorn Hike", {
@@ -60,11 +58,6 @@
  
       var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
       map.setCenter(lonLat, zoom);
- 
-      var size = new OpenLayers.Size(21, 25);
-      var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-      var icon = new OpenLayers.Icon('http://www.openstreetmap.org/openlayers/img/marker.png',size,offset);
-      layerMarkers.addMarker(new OpenLayers.Marker(lonLat,icon));
     }
   </script>
  
