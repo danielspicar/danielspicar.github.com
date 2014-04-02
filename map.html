@@ -10,7 +10,7 @@
      Using this hosted file will make sure we are kept up
      to date with any necessary changes -->
   <script src="http://www.openstreetmap.org/openlayers/OpenStreetMap.js"></script>
- 
+  <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
   <script type="text/javascript">
     // Start position for the map (hardcoded here for simplicity,
     // but maybe you want to get this from the URL params)
@@ -39,8 +39,10 @@
       // Here we use a predefined layer that will be kept up to date with URL changes
       //layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
       //map.addLayer(layerMapnik);
-      layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
-      map.addLayer(layerCycleMap);
+      var gphy = new OpenLayers.Layer.Google("Google Physical", {type: google.maps.MapTypeId.TERRAIN});
+      map.addLayer(gphy);
+      //layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+      //map.addLayer(layerCycleMap);
       layerMarkers = new OpenLayers.Layer.Markers("Markers");
       map.addLayer(layerMarkers);
  
