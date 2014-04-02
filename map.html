@@ -14,8 +14,8 @@
   <script type="text/javascript">
     // Start position for the map (hardcoded here for simplicity,
     // but maybe you want to get this from the URL params)
-    var lat=47.496792
-    var lon=7.571726
+    var lat=46.7833
+    var lon=9.6833
     var zoom=13
  
     var map; //complex object of type OpenLayers.Map
@@ -48,10 +48,10 @@
       var lgpx = new OpenLayers.Layer.Vector("Lakeside cycle ride", {
         strategies: [new OpenLayers.Strategy.Fixed()],
         protocol: new OpenLayers.Protocol.HTTP({
-          url: "weisshorn-2014.gpx",
+          url: "",
           format: new OpenLayers.Format.GPX()
         }),
-        style: {strokeColor: "green", strokeWidth: 5, strokeOpacity: 0.5},
+        style: {strokeColor: "red", strokeWidth: 5, strokeOpacity: 0.5},
         projection: new OpenLayers.Projection("EPSG:4326")
       });
       map.addLayer(lgpx);
