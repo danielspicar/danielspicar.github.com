@@ -37,10 +37,12 @@
  
       // Define the map layer
       // Here we use a predefined layer that will be kept up to date with URL changes
-      layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
-      map.addLayer(layerMapnik);
-      layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
-      map.addLayer(layerCycleMap);
+      //layerMapnik = new OpenLayers.Layer.OSM.Mapnik("Mapnik");
+      //map.addLayer(layerMapnik);
+      //layerCycleMap = new OpenLayers.Layer.OSM.CycleMap("CycleMap");
+      //map.addLayer(layerCycleMap);
+      googleLayer = new OpenLayers.Layer.Google("Google Physical", {type: google.maps.MapTypeId.TERRAIN});
+      map.addLayer(googleLayer)
       layerMarkers = new OpenLayers.Layer.Markers("Markers");
       map.addLayer(layerMarkers);
  
